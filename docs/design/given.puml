@@ -1,0 +1,199 @@
+@startuml Exploding Kittens Game Class Diagram
+
+left to right direction
+skinparam classAttributeIconSize 0
+
+package "domain.game" {
+    enum CardType {
+        ' Base Game
+        +NOPE
+        +DEFUSE
+        +ATTACK
+        +SHUFFLE
+        +SKIP
+        +SEE_THE_FUTURE
+        +TACOCAT
+        +CATTERMELON
+        +HAIRY_POTATO_CAT
+        +BEARD_CAT
+        +RAINBOW_RALPHING_CAT
+        +EXPLODING_KITTEN
+
+        ' Streaking Kittens
+        +STREAKING_KITTEN
+        +SWAP_TOP_AND_BOTTOM
+        +GARBAGE_COLLECTION
+        +CURSE_OF_THE_CAT_BUTT
+        +ALTER_THE_FUTURE
+        +CATOMIC_BOMB
+        +SUPER_SKIP
+        +MARK
+
+        ' Imploding Kittens
+        +IMPLODING_KITTEN
+        +REVERSE
+        +FERAL_CAT
+        +TARGETED_ATTACK
+        +DRAW_FROM_THE_BOTTOM
+    }
+
+    enum GameType {
+        +EXPLODING_KITTENS
+        +STREAKING_KITTENS
+        +IMPLODING_KITTENS
+    }
+
+    class Card {
+        -CardType cardType
+        -boolean isMarked
+        -boolean isFacedUp
+
+        +Card(CardType)
+        +getCardType(): CardType
+        +mark(): void
+        +isMarked(): boolean
+        +setFacedUp(boolean): void
+        +isFacedUp(): boolean
+    }
+
+    class Deck {
+        -List<Card> cards
+        -Instantiator instantiator
+
+        +Deck(GameType, int, Instantiator)
+        +shuffle(): void
+        +drawCard(): Card
+        +insertCard(Card, int): void
+        +removeExplodingKitten(): void
+        +size(): int
+        +getTopCards(int): List<Card>
+        +reorderTopCards(List<Card>): void
+        +isEmpty(): boolean
+        +getCards(): List<Card>
+        +swapTopAndBottom(): void
+        +removeImplodingKitten(): void
+        +insertImplodingKitten(int): void
+        -initializeDeck(GameType, int): void
+        -addBaseCards(): void
+        -addStreakingKittensCards(): void
+        -addImplodingKittensCards(): void
+    }
+
+    class Player {
+        -int playerId
+        -List<Card> hand
+        -boolean isAlive
+        -boolean isCursed
+
+        +Player(int)
+        +getPlayerId(): int
+        +addCard(Card): void
+        +removeCard(Card): void
+        +getHand(): List<Card>
+        +hasCard(CardType): boolean
+        +isAlive(): boolean
+        +setAlive(boolean): void
+        +isCursed(): boolean
+        +setCursed(boolean): void
+        +countCards(CardType): int
+        +shuffleHand(): void
+    }
+
+    class Game {
+        -List<Player> players
+        -Deck deck
+        -int currentPlayerIndex
+        -int attacksRemaining
+        -boolean gameOver
+        -boolean isReversed
+        -GameType gameType
+        -Instantiator instantiator
+
+        +Game(List<Player>, Deck, GameType, Instantiator)
+        +getCurrentPlayer(): Player
+        +drawCard(): void
+        +playCard(Card): void
+        +playNope(): boolean
+        +playDefuse(int): void
+        +playAttack(): void
+        +playShuffle(): void
+        +playSkip(): void
+        +playSeeTheFuture(): List<Card>
+        +playCatCards(List<Card>): Card
+        +nextTurn(): void
+        +isGameOver(): boolean
+        +getWinner(): Player
+        +getDeck(): Deck
+        +getPlayers(): List<Player>
+        +playSwapTopAndBottom(): void
+        +playGarbageCollection(): void
+        +playCurseOfTheCatButt(int): void
+        +playAlterTheFuture(List<Card>): void
+        +playCatomicBomb(): void
+        +playSuperSkip(): void
+        +playMark(Card): void
+        +playReverse(): void
+        +playTargetedAttack(int): void
+        +playDrawFromTheBottom(): void
+        -handleExplodingKitten(): void
+        -handleImplodingKitten(Card): void
+        -eliminatePlayer(Player): void
+        -hasStreakingKitten(Player): boolean
+    }
+
+    class Instantiator {
+        +createCard(CardType): Card
+        +createList(): List
+        +createRandom(): Random
+    }
+}
+
+package "ui" {
+    class GameUI {
+        -Game game
+        -Scanner scanner
+        -ResourceBundle messages
+
+        +GameUI()
+        +start(): void
+        +setupGame(): void
+        +playTurn(): void
+        -selectLanguage(): String
+        -selectGameType(): GameType
+        -selectNumberOfPlayers(): int
+        -displayPlayerHand(Player): void
+        -handleCardPlay(Player): void
+        -handleNope(): boolean
+        -handleDefuse(Player): void
+        -handleSeeTheFuture(): void
+        -handleCatCards(Player): void
+        -handleAlterTheFuture(): void
+        -handleTargetedAttack(Player): void
+        -displayGameOver(): void
+    }
+
+    class Main {
+        +{static} main(String[]): void
+    }
+}
+
+' Relationships
+Card *-- CardType : composition
+Deck o-- Card : aggregation
+Deck *-- GameType : composition
+Deck *-- Instantiator : composition
+Player o-- Card : aggregation
+Game *-- Player : composition
+Game *-- Deck : composition
+Game *-- GameType : composition
+Game *-- Instantiator : composition
+GameUI *-- Game : composition
+GameUI ..> Scanner : dependency
+GameUI ..> ResourceBundle : dependency
+Main ..> GameUI : dependency
+Main ..> Game : dependency
+Main ..> Player : dependency
+Main ..> Deck : dependency
+Main ..> Instantiator : dependency
+
+@enduml
