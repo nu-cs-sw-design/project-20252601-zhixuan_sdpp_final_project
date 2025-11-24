@@ -1,0 +1,108 @@
+@startuml Exploding Kittens Improved Design
+
+left to right direction
+skinparam classAttributeIconSize 0
+
+package "domain.game" {
+    enum CardType {
+        +NOPE
+        +DEFUSE
+        +SHUFFLE
+        +SKIP
+        +EXPLODING_KITTEN
+        +ATTACK
+        +SEE_THE_FUTURE
+        ' ... other types
+    }
+
+    class Card {
+        -CardType cardType
+        +Card(CardType)
+        +getCardType(): CardType
+    }
+
+    class Deck {
+        -List<Card> cards
+        +shuffle(): void
+        +drawCard(): Card
+        +insertCard(Card, int): void
+        +size(): int
+    }
+
+    class Player {
+        -int playerId
+        -List<Card> hand
+        -boolean isAlive
+        +addCard(Card): void
+        +removeCard(Card): void
+        +hasCard(CardType): boolean
+    }
+
+    interface CardAction {
+        +execute(Game game, Player player): void
+    }
+
+    class ShuffleAction implements CardAction {
+        +execute(Game game, Player player): void
+    }
+
+    class SkipAction implements CardAction {
+        +execute(Game game, Player player): void
+    }
+
+    class ExplodingKittenAction implements CardAction {
+        +execute(Game game, Player player): void
+    }
+
+    class NopeAction implements CardAction {
+        +execute(Game game, Player player): void
+    }
+    
+    class DefaultAction implements CardAction {
+        +execute(Game game, Player player): void
+    }
+
+    class ActionFactory {
+        +{static} createAction(CardType type): CardAction
+    }
+
+    class Game {
+        -List<Player> players
+        -Deck deck
+        -int currentPlayerIndex
+        -Stack<CardAction> pendingActions
+        -boolean gameOver
+
+        +Game(List<Player>, Deck)
+        +playCard(Player player, Card card): void
+        +resolveActions(): void
+        +drawCard(Player player): void
+        +eliminatePlayer(Player player): void
+        +nextTurn(): void
+        +getDeck(): Deck
+        +getPendingActions(): Stack<CardAction>
+    }
+}
+
+package "ui" {
+    class GameUI {
+        -Game game
+        +start(): void
+    }
+}
+
+Card --> CardType
+Deck o-- Card
+Player o-- Card
+Game o-- Player
+Game o-- Deck
+Game ..> CardAction : uses
+Game ..> ActionFactory : uses
+
+ActionFactory ..> ShuffleAction : creates
+ActionFactory ..> SkipAction : creates
+ActionFactory ..> ExplodingKittenAction : creates
+ActionFactory ..> NopeAction : creates
+ActionFactory ..> DefaultAction : creates
+
+@enduml
