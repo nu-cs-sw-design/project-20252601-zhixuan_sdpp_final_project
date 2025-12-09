@@ -3314,6 +3314,7 @@ public class GameTest {
 
 		EasyMock.expect(player.hasCard(CardType.DEFUSE)).andReturn(true).anyTimes();
 		EasyMock.expect(player.getIsDead()).andReturn(false).anyTimes();
+		EasyMock.expect(player.getPlayerID()).andReturn(0).anyTimes();
 
 		EasyMock.replay(deck, player, rand
 				, attackQueue);
@@ -3353,6 +3354,7 @@ public class GameTest {
 		game.setCurrentPlayerNumberOfTurns(1);
 		EasyMock.expect(player.hasCard(CardType.DEFUSE)).andReturn(false).anyTimes();
 		EasyMock.expect(player.getIsDead()).andReturn(true).anyTimes();
+		EasyMock.expect(player.getPlayerID()).andReturn(playerIndex).anyTimes();
 		player.setIsDead();
 		EasyMock.expect(otherPlayer.getIsDead()).andReturn(false).anyTimes();
 
@@ -3394,6 +3396,7 @@ public class GameTest {
 		game.setCurrentPlayerNumberOfTurns(1);
 
 		EasyMock.expect(player.hasCard(CardType.DEFUSE)).andReturn(false).anyTimes();
+		EasyMock.expect(player.getPlayerID()).andReturn(playerIndex).anyTimes();
 		EasyMock.expect(player.getIsDead()).andReturn(true).anyTimes();
 		player.setIsDead();
 		EasyMock.expect(deadPlayer.getIsDead()).andReturn(true).anyTimes();
