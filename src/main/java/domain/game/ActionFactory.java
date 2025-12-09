@@ -8,6 +8,8 @@ public class ActionFactory {
                 return new SkipAction();
             case SHUFFLE:
                 return new ShuffleAction();
+            case EXPLODING_KITTEN:
+                return new ExplodingKittenAction();
             default:
                 return new DefaultAction();
         }

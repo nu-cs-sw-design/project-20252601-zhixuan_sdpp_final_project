@@ -137,14 +137,10 @@ public class Game {
 		if (checkUserOutOfBounds(playerIndex)) {
 			throw new UnsupportedOperationException(INVALID_PLAYER_INDEX_EXCEPTION);
 		}
-		if (checkIfPlayerHasCard(playerIndex, CardType.DEFUSE)) {
-			return false;
-		}
-		players[playerIndex].setIsDead();
-		if (playerIndex == currentPlayerTurn) {
-			setCurrentPlayerNumberOfTurns(0);
-		}
-		return true;
+		Player player = players[playerIndex];
+		CardAction action = ActionFactory.createAction(CardType.EXPLODING_KITTEN);
+		action.execute(this, player);
+		return player.getIsDead();
 	}
 
 	public void playImplodingKitten() {
