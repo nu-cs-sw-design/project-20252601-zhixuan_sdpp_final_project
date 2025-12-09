@@ -520,6 +520,7 @@ public class GameUI {
 
 		System.out.println(decidedToPlayNope);
 		game.removeCardFromHand(playerIndex, CardType.NOPE);
+		game.playCardAction(new domain.game.Card(domain.game.CardType.NOPE));
 		System.out.println(successfullyPlayedNope);
 	}
 

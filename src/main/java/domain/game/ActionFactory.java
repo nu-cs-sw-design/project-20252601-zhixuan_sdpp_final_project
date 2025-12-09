@@ -10,6 +10,8 @@ public class ActionFactory {
                 return new ShuffleAction();
             case EXPLODING_KITTEN:
                 return new ExplodingKittenAction();
+            case NOPE:
+                return new NopeAction();
             default:
                 return new DefaultAction();
         }
