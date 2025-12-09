@@ -1552,7 +1552,7 @@ public class GameUI {
 					System.out.println(newBottomCardMessage);
 					break;
 				case SHUFFLE:
-					playShuffle();
+					game.playCardAction(new domain.game.Card(domain.game.CardType.SHUFFLE));
 					break;
 				case SKIP:
 					game.playCardAction(new Card(CardType.SKIP));

@@ -6,6 +6,8 @@ public class ActionFactory {
         switch (type) {
             case SKIP:
                 return new SkipAction();
+            case SHUFFLE:
+                return new ShuffleAction();
             default:
                 return new DefaultAction();
         }
