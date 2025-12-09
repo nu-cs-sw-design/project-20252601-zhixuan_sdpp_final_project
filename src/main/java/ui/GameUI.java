@@ -1555,7 +1555,7 @@ public class GameUI {
 					playShuffle();
 					break;
 				case SKIP:
-					playSkip(false);
+					game.playCardAction(new Card(CardType.SKIP));
 					return;
 				case SUPER_SKIP:
 					playSkip(true);

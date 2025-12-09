@@ -489,4 +489,9 @@ public class Game {
 	void setAttacked(boolean attacked) {
 		this.attacked = attacked;
 	}
+
+	public void playCardAction(Card card) {
+		CardAction action = ActionFactory.createAction(card.getCardType());
+		action.execute(this, this.players[currentPlayerTurn]);
+	}
 }
